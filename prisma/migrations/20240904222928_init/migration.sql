@@ -1,9 +1,9 @@
 -- CreateTable
 CREATE TABLE "Account" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL,
+    "accountName" TEXT NOT NULL,
     "accountNumber" TEXT NOT NULL,
-    "balance" REAL NOT NULL
+    "accountBalance" REAL NOT NULL
 );
 
 -- CreateTable

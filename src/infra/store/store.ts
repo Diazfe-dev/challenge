@@ -4,7 +4,7 @@ import accountReducer from './slices/account.slice';
 
 export const store = configureStore({
     reducer: {
-        user: accountReducer
+        accounts: accountReducer
     }
 })
 

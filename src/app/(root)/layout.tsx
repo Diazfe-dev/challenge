@@ -1,21 +1,19 @@
-import { Footer, Navbar } from "@/components";
+import { Footer, Navbar } from '@/components'
 
 export default function GuardLayout({
-    children,
+  children
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-    return (
-        <div className=" h-screen flex flex-col justify-between">
-            <div>
-                <Navbar />
-            </div>
-            <main className="flex-1">
-                {children}
-            </main>
-            <div>
-                <Footer />
-            </div>
-        </div>
-    );
+  return (
+    <div className='flex h-screen flex-col justify-between'>
+      <div>
+        <Navbar />
+      </div>
+      <main className='flex-1 p-8'>{children}</main>
+      <div>
+        <Footer />
+      </div>
+    </div>
+  )
 }
