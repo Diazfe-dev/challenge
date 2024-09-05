@@ -1,11 +1,12 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { fetchAllAccounts } from '@/infra/store/thunks'
-
-import { AccountList, CreateAccount } from '@/components'
-import { CreateTransaction } from '@/components/transactions'
 import { AppDispatch } from '@/infra/store'
-import { useEffect } from 'react'
+
+import { Toaster } from '@/components/ui/toaster';
+
+import { AccountList, CreateAccount, CreateTransaction } from '@/components';
 
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>()
@@ -21,6 +22,7 @@ export default function DashboardPage() {
       <div className='w-full'>
         <AccountList />
       </div>
+      <Toaster />
     </div>
   )
 }

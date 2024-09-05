@@ -23,11 +23,20 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
+import { useToast } from '@/hooks/use-toast'
 
-export const CreateTransactionForm = () => {
+interface Props {
+  handleClose: () => void
+}
+
+export const CreateTransactionForm = ({ handleClose }: Props) => {
+  const { toast } = useToast()
+
+  const [error, setError] = useState<string>()
+
   const dispatch = useDispatch<AppDispatch>()
   const accounts = useSelector((state: RootState) => state.accounts.accounts)
-  const [error, setError] = useState<string>()
+
   const form = useForm<z.infer<typeof createTransactionSchema>>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {}
@@ -42,7 +51,13 @@ export const CreateTransactionForm = () => {
 
   const action = handleSubmit(async formData => {
     try {
-      await dispatch(createTransaction(formData)).unwrap()
+      await dispatch(createTransaction(formData))
+      toast({
+        title: 'Transaccion efectuada correctamente.',
+        description: `Tipo de transaccion: ${formData.transactionType === TransactionType.WITHDRAW ? 'Retiro' : 'Deposito'}.
+        Monto: $${formData.transactionAmount}`
+      })
+      handleClose()
     } catch (error) {
       setError(`${error}`)
     }

@@ -10,16 +10,21 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import { httpResponseCode } from '@/domain'
 import { createAccountSchema } from '@/domain/schemas'
 
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
+import { useToast } from '@/hooks/use-toast'
+import { ToastAction } from '../ui/toast'
 
-export const CreateAccountForm = () => {
+interface Props {
+  handleClose: () => void
+}
+
+export const CreateAccountForm = ({ handleClose }: Props) => {
+  const { toast } = useToast()
   const dispatch = useDispatch<AppDispatch>()
-
   const [error, setError] = useState<string>()
 
   const form = useForm<z.infer<typeof createAccountSchema>>({
@@ -34,11 +39,29 @@ export const CreateAccountForm = () => {
 
   const action = handleSubmit(async formData => {
     try {
-      await dispatch(createAccount(formData)).unwrap()
+      await dispatch(createAccount(formData))
+      toast({
+        title: 'Cuenta creada correctamente.',
+        description: `Numero de cuenta: ${formData.accountNumber}`,
+        action: (
+          <ToastAction
+            onClick={() => copyToClipboard(formData.accountNumber)}
+            altText='Copy account number'
+          >
+            Copiar
+          </ToastAction>
+        )
+      })
+      handleClose()
     } catch (error) {
+      console.log(error)
       setError(`${error}`)
     }
   })
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+  }
 
   return (
     <form onSubmit={action}>
