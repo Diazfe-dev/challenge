@@ -1,3 +1,3 @@
-export * from './accountEntity';
-export * from './transactionEntity';
-export * from './transactionType';
+export * from './accountEntity'
+export * from './transactionEntity'
+export * from './transactionType'

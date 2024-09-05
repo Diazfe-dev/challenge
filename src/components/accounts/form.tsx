@@ -3,25 +3,29 @@
 import { useState } from 'react'
 
 import { useDispatch } from 'react-redux'
-import { addAccount } from '@/infra/store/slices/account.slice'
+import { AppDispatch } from '@/infra/store'
+import { createAccount } from '@/infra/store/thunks'
 
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import { httpResponseCode } from '@/domain'
 import { createAccountSchema } from '@/domain/schemas'
-import { createAccountAction } from '@/infra/actions/createAccount.action'
 
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
+import { useToast } from '@/hooks/use-toast'
+import { ToastAction } from '../ui/toast'
 
-export const CreateAccountForm = () => {
-  const dispatch = useDispatch()
+interface Props {
+  handleClose: () => void
+}
 
+export const CreateAccountForm = ({ handleClose }: Props) => {
+  const { toast } = useToast()
+  const dispatch = useDispatch<AppDispatch>()
   const [error, setError] = useState<string>()
-  const [accountExists, setAccountExists] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof createAccountSchema>>({
     resolver: zodResolver(createAccountSchema),
@@ -34,26 +38,30 @@ export const CreateAccountForm = () => {
   } = form
 
   const action = handleSubmit(async formData => {
-    const response = await createAccountAction(formData)
-    if (!response.success) {
-      switch (response.error) {
-        case httpResponseCode.BAD_REQUEST:
-          setError('Error al intentar crear la cuenta')
-          break
-        case httpResponseCode.CONFLICT:
-          setError('La cuenta que intentas crear ya existe')
-          break
-        case httpResponseCode.INTERNAL_ERROR:
-          setError('Error en el servidor')
-          break
-        default:
-          setError('Error en el servidor')
-      }
-
-      return
+    try {
+      await dispatch(createAccount(formData))
+      toast({
+        title: 'Cuenta creada correctamente.',
+        description: `Numero de cuenta: ${formData.accountNumber}`,
+        action: (
+          <ToastAction
+            onClick={() => copyToClipboard(formData.accountNumber)}
+            altText='Copy account number'
+          >
+            Copiar
+          </ToastAction>
+        )
+      })
+      handleClose()
+    } catch (error) {
+      console.log(error)
+      setError(`${error}`)
     }
-    dispatch(addAccount(response.account))
   })
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+  }
 
   return (
     <form onSubmit={action}>

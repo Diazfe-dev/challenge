@@ -1,3 +1,3 @@
-import { Transaction } from "@prisma/client";
+import { Transaction } from '@prisma/client'
 
-export type TransactionEntity = Transaction;
+export type TransactionEntity = Transaction

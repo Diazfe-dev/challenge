@@ -1,2 +1,2 @@
-export * from './createAccount.schema';
-export * from './createTransaction.schema';
+export * from './createAccount.schema'
+export * from './createTransaction.schema'

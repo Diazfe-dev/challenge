@@ -1,12 +1,11 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
-interface Props { }
+interface Props {}
 
 export const UserAvatar = (props: Props) => {
-
-    return (
-        <Avatar>
-            <AvatarFallback>FD</AvatarFallback>
-        </Avatar>
-    )
+  return (
+    <Avatar>
+      <AvatarFallback>FD</AvatarFallback>
+    </Avatar>
+  )
 }

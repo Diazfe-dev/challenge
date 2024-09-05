@@ -1,40 +1,71 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { AccountEntity } from '@/domain'
+import { Card } from '@/components/ui/card'
+import { TransactionEntity, TransactionType } from '@/domain'
 import { Separator } from '../ui/separator'
+import { cn } from '@/lib/utils'
 
 interface Props {
-  account: AccountEntity
+  account: {
+    id: number
+    accountName: string
+    accountNumber: string
+    accountBalance: number
+    transactions?: TransactionEntity[]
+  }
 }
 
 export const AccountCard = (props: Props) => {
   const { account } = props
-  const { accountBalance, accountName, accountNumber } = account
+
+  const lastTransaction =
+    account.transactions && account.transactions.length > 0
+      ? account.transactions[account.transactions.length - 1]
+      : null
+
+  const transactionStyle =
+    lastTransaction?.type === TransactionType.DEPOSIT
+      ? 'text-green-500'
+      : 'text-red-500'
+
   return (
     <Card className='m-auto h-[200px] w-[350px] p-4'>
-      <div className='flex h-full flex-col items-start justify-start gap-4'>
+      <div className='flex h-full flex-col items-start justify-start gap-2'>
         <div>
-          <span className='text-xl font-bold text-slate-300'>
-            {accountName}
+          <span className='text-md font-bold text-zinc-600'>
+            {account.accountName}
           </span>
         </div>
         <div>
-          <span>Número de cuenta: </span>
-          <span className='text-sm font-thin'>{accountNumber}</span>
+          <span className='text-sm font-medium'>Número de cuenta: </span>
+          <span className='text-sm font-thin'>{account.accountNumber}</span>
         </div>
         <div>
-          <span>Balance: </span>
-          <span className='text-sm font-thin'>{accountBalance}</span>
+          <span className='text-sm font-medium'>Balance: </span>
+          <span className='text-sm font-thin'>{account.accountBalance}</span>
         </div>
         <Separator />
         <div>
-          <span>Ultima transaccion</span>
+          <span className='text-md font-bold text-zinc-600'>
+            Última transacción:
+          </span>
+          {lastTransaction && (
+            <div>
+              <div
+                className='flex flex-row content-center items-center justify-start text-center'
+                key={lastTransaction.id}
+              >
+                <span className='text-md font-regular'>
+                  {lastTransaction.type === TransactionType.DEPOSIT
+                    ? 'Deposito:'
+                    : 'Retiro'}
+                </span>
+                <span
+                  className={cn('text-md ml-2 font-bold', transactionStyle)}
+                >
+                  ${lastTransaction.amount}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </Card>

@@ -1,27 +1,17 @@
 'use client'
-
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { fetchAllAccounts } from '@/infra/store/thunks'
+import { AppDispatch } from '@/infra/store'
 
-import { fetchAllAccountsAction } from '@/infra/actions'
-import { setAccounts } from '@/infra/store/slices/account.slice'
+import { Toaster } from '@/components/ui/toaster'
 
-import { AccountList, CreateAccount } from '@/components'
-import { CreateTransaction } from '@/components/transactions'
+import { AccountList, CreateAccount, CreateTransaction } from '@/components'
 
 export default function DashboardPage() {
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
-    const loadAccounts = async () => {
-      try {
-        const accounts = await fetchAllAccountsAction()
-        dispatch(setAccounts(accounts))
-      } catch (error) {
-        console.error('Error loading accounts:', error)
-      }
-    }
-    loadAccounts()
+    dispatch(fetchAllAccounts())
   }, [dispatch])
   return (
     <div className='flex h-full w-full flex-col gap-4'>
@@ -32,6 +22,7 @@ export default function DashboardPage() {
       <div className='w-full'>
         <AccountList />
       </div>
+      <Toaster />
     </div>
   )
 }
