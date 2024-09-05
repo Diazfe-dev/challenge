@@ -11,8 +11,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Provider } from 'react-redux';
 import { store } from "@/infra/store";
 
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
