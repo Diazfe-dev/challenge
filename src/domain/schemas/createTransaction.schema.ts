@@ -1,11 +1,15 @@
-import { z } from "zod";
+import { z } from 'zod'
+import { TransactionType } from '../entities'
 
-export const createAccountSchema = z.object({
-    accountNumber: z.string().min(3, { message: "El nombre del usuario debe tener al menos 3 dígitos de largo" }).max(10, { message: "El nombre del usuario debe tener maximo 10 dígitos de largo" }),
-    accountName: z.string()
-        .min(3, { message: "El nombre del usuario debe tener al menos 3 dígitos de largo" }),
-    accountBalance: z.number({ message: "El balance es requerido" })
-        .refine((val) => val.toString().length <= 20, {
-            message: "El balance de la cuenta debe tener como máximo 20 dígitos",
-        }),
-});
+export const createTransactionSchema = z.object({
+  accountNumber: z.string({ message: 'Debe seleccionar una cuenta' }),
+  transactionType: z.enum(
+    [TransactionType.DEPOSIT, TransactionType.WIDTHDRAW],
+    { message: 'Debe seleccionar un tipo de transaccion' }
+  ),
+  transactionAmount: z
+    .number({ message: 'Debe ingresar un valor para la transaccion' })
+    .refine(val => val.toString().length <= 20, {
+      message: 'La operacion puede tener hasta 20 digitos'
+    })
+})

@@ -1,23 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/infra/store'
-import { addAccount } from '@/infra/store/slices/account.slice'
-
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 
-import { httpResponseCode, TransactionType } from '@/domain'
-import { createAccountSchema } from '@/domain/schemas'
-import { createAccountAction } from '@/infra/actions/createAccount.action'
-
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
-
 import {
   Select,
   SelectContent,
@@ -26,60 +18,49 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
+import { httpResponseCode, TransactionType } from '@/domain'
+import { createTransactionSchema } from '@/domain/schemas'
+
 export const CreateTransactionForm = () => {
   const accounts = useSelector((state: RootState) => state.accounts)
-  //   const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-  //   const [error, setError] = useState<string>()
-  //   const [accountExists, setAccountExists] = useState<boolean>(false)
+  const [error, setError] = useState<string>()
 
-  //   const form = useForm<z.infer<typeof createAccountSchema>>({
-  //     resolver: zodResolver(createAccountSchema),
-  //     defaultValues: {}
-  //   })
-  //   const {
-  //     register,
-  //     handleSubmit,
-  //     formState: { errors }
-  //   } = form
+  const form = useForm<z.infer<typeof createTransactionSchema>>({
+    resolver: zodResolver(createTransactionSchema),
+    defaultValues: {}
+  })
 
-  //   const action = handleSubmit(async formData => {
-  //     const response = await createAccountAction(formData)
-  //     if (!response.success) {
-  //       switch (response.error) {
-  //         case httpResponseCode.BAD_REQUEST:
-  //           setError('Error al intentar crear la cuenta')
-  //           break
-  //         case httpResponseCode.CONFLICT:
-  //           setError('La cuenta que intentas crear ya existe')
-  //           break
-  //         case httpResponseCode.INTERNAL_ERROR:
-  //           setError('Error en el servidor')
-  //           break
-  //         default:
-  //           setError('Error en el servidor')
-  //       }
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors }
+  } = form
 
-  //       return
-  //     }
-  //     dispatch(addAccount(response.account))
-  //   })
+  const action = handleSubmit(async formData => {
+    console.log(formData)
+  })
 
   return (
-    <form>
+    <form onSubmit={action}>
       <div className='flex flex-col gap-4 py-4'>
         <div>
-          <Label htmlFor='accountID' className='text-right'>
+          <Label htmlFor='accountNumber' className='text-right'>
             Seleccione la cuenta en la que quiere operar
           </Label>
-          <Select>
-            <SelectTrigger>
+          <Select onValueChange={value => setValue('accountNumber', value)}>
+            <SelectTrigger id='accountNumber'>
               <SelectValue placeholder='Seleccione' />
             </SelectTrigger>
             <SelectContent>
               {accounts &&
                 accounts.map(account => (
-                  <SelectItem key={account.id} value={account.id.toString()}>
+                  <SelectItem
+                    key={account.accountNumber}
+                    value={account.accountNumber}
+                  >
                     {account.accountNumber}
                   </SelectItem>
                 ))}
@@ -87,27 +68,34 @@ export const CreateTransactionForm = () => {
           </Select>
           <div className='col-span-3'>
             <span className='text-sm text-red-600'>
-              {/* {errors.accountName?.message} */}
+              {errors.accountNumber?.message}
             </span>
           </div>
         </div>
 
         <div>
-          <Label htmlFor='accountID' className='text-right'>
+          <Label htmlFor='transactionType' className='text-right'>
             Seleccione el tipo de transacción
           </Label>
-          <Select>
-            <SelectTrigger>
+          <Select
+            onValueChange={value => {
+              if (value === TransactionType.DEPOSIT)
+                setValue('transactionType', TransactionType.DEPOSIT)
+              else if (value === TransactionType.WIDTHDRAW)
+                setValue('transactionType', TransactionType.WIDTHDRAW)
+            }}
+          >
+            <SelectTrigger id='transactionType'>
               <SelectValue placeholder='Seleccione' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value='Deposito'>Deposito</SelectItem>
-              <SelectItem value='Retiro'>Retiro</SelectItem>
+              <SelectItem value={'deposit'}>Deposito</SelectItem>
+              <SelectItem value={'withdraw'}>Retiro</SelectItem>
             </SelectContent>
           </Select>
           <div className='col-span-3'>
             <span className='text-sm text-red-600'>
-              {/* {errors.accountName?.message} */}
+              {errors.transactionType?.message}
             </span>
           </div>
         </div>
@@ -120,17 +108,17 @@ export const CreateTransactionForm = () => {
             type='number'
             placeholder='1000'
             className='col-span-3'
-            // {...register('accountNumber')}
+            {...register('transactionAmount', { valueAsNumber: true })}
           />
           <div className='col-span-3'>
             <span className='text-sm text-red-600'>
-              {/* {errors.accountNumber?.message} */}
+              {errors.transactionAmount?.message}
             </span>
           </div>
         </div>
       </div>
       <div className='flex flex-row justify-end'>
-        {/* {error && <span className='text-sm text-red-600'>{error}</span>} */}
+        {error && <span className='text-sm text-red-600'>{error}</span>}
         <Button type='submit'>Enviar</Button>
       </div>
     </form>
