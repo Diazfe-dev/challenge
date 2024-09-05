@@ -2,10 +2,16 @@
 
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/infra/store'
+
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+
+import { AccountEntity, TransactionType } from '@/domain'
+import { createTransactionSchema } from '@/domain/schemas'
+
+import { AppDispatch, RootState } from '@/infra/store'
+import { createTransaction } from '@/infra/store/thunks'
 
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -18,15 +24,10 @@ import {
   SelectValue
 } from '@/components/ui/select'
 
-import { httpResponseCode, TransactionType } from '@/domain'
-import { createTransactionSchema } from '@/domain/schemas'
-
 export const CreateTransactionForm = () => {
-  const accounts = useSelector((state: RootState) => state.accounts)
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch<AppDispatch>()
+  const accounts = useSelector((state: RootState) => state.accounts.accounts)
   const [error, setError] = useState<string>()
-
   const form = useForm<z.infer<typeof createTransactionSchema>>({
     resolver: zodResolver(createTransactionSchema),
     defaultValues: {}
@@ -40,7 +41,11 @@ export const CreateTransactionForm = () => {
   } = form
 
   const action = handleSubmit(async formData => {
-    console.log(formData)
+    try {
+      await dispatch(createTransaction(formData)).unwrap()
+    } catch (error) {
+      setError(`${error}`)
+    }
   })
 
   return (
@@ -56,7 +61,7 @@ export const CreateTransactionForm = () => {
             </SelectTrigger>
             <SelectContent>
               {accounts &&
-                accounts.map(account => (
+                accounts.map((account: AccountEntity) => (
                   <SelectItem
                     key={account.accountNumber}
                     value={account.accountNumber}
@@ -81,8 +86,8 @@ export const CreateTransactionForm = () => {
             onValueChange={value => {
               if (value === TransactionType.DEPOSIT)
                 setValue('transactionType', TransactionType.DEPOSIT)
-              else if (value === TransactionType.WIDTHDRAW)
-                setValue('transactionType', TransactionType.WIDTHDRAW)
+              else if (value === TransactionType.WITHDRAW)
+                setValue('transactionType', TransactionType.WITHDRAW)
             }}
           >
             <SelectTrigger id='transactionType'>

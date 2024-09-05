@@ -4,7 +4,7 @@ import { TransactionType } from '../entities'
 export const createTransactionSchema = z.object({
   accountNumber: z.string({ message: 'Debe seleccionar una cuenta' }),
   transactionType: z.enum(
-    [TransactionType.DEPOSIT, TransactionType.WIDTHDRAW],
+    [TransactionType.DEPOSIT, TransactionType.WITHDRAW],
     { message: 'Debe seleccionar un tipo de transaccion' }
   ),
   transactionAmount: z
