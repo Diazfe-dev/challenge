@@ -1,12 +1,5 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { AccountEntity, TransactionEntity, TransactionType } from '@/domain'
+import { Card } from '@/components/ui/card'
+import { TransactionEntity, TransactionType } from '@/domain'
 import { Separator } from '../ui/separator'
 import { cn } from '@/lib/utils'
 
@@ -65,7 +58,9 @@ export const AccountCard = (props: Props) => {
                     ? 'Deposito:'
                     : 'Retiro'}
                 </span>
-                <span className={cn('text-md font-bold ml-2', transactionStyle)}>
+                <span
+                  className={cn('text-md ml-2 font-bold', transactionStyle)}
+                >
                   ${lastTransaction.amount}
                 </span>
               </div>

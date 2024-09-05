@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux'
 import { fetchAllAccounts } from '@/infra/store/thunks'
 import { AppDispatch } from '@/infra/store'
 
-import { Toaster } from '@/components/ui/toaster';
+import { Toaster } from '@/components/ui/toaster'
 
-import { AccountList, CreateAccount, CreateTransaction } from '@/components';
+import { AccountList, CreateAccount, CreateTransaction } from '@/components'
 
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>()

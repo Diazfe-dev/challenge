@@ -1,17 +1,18 @@
-'use client';
+'use client'
+
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
+
 import { CreateTransactionForm } from './form'
-import { useState } from 'react'
 
 interface Props {}
 export const CreateTransaction = ({}: Props) => {
@@ -31,7 +32,7 @@ export const CreateTransaction = ({}: Props) => {
             Completa los datos y comenza a operar!
           </DialogDescription>
         </DialogHeader>
-        <CreateTransactionForm handleClose={handleClose}/>
+        <CreateTransactionForm handleClose={handleClose} />
       </DialogContent>
     </Dialog>
   )

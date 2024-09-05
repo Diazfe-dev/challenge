@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import { RootState } from '@/infra/store'
-
 import { AccountCard } from './account-card'
 
 export const AccountList = () => {

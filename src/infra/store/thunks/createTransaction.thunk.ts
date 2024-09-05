@@ -1,6 +1,6 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { TransactionType } from '@/domain';
-import { generateTransactionAction } from '@/infra/actions';
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { TransactionType } from '@/domain'
+import { generateTransactionAction } from '@/infra/actions'
 import { fetchAllAccounts } from './fetchAllAccounts.thunk'
 
 interface CreateTransactionPayload {

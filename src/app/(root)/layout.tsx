@@ -1,4 +1,5 @@
 import { Footer, Navbar } from '@/components'
+
 export default function GuardLayout({
   children
 }: Readonly<{

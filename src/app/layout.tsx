@@ -1,15 +1,16 @@
 'use client'
-import { Inter as FontSans } from 'next/font/google'
-import './globals.css'
-import { cn } from '@/lib/utils'
 
-const fontSans = FontSans({ subsets: ['latin'], variable: '--font-sans' })
+import { Inter as FontSans } from 'next/font/google'
+import { cn } from '@/lib/utils'
+import './globals.css'
 
 import { useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 
 import { Provider } from 'react-redux'
 import store from '@/infra/store/store'
+
+const fontSans = FontSans({ subsets: ['latin'], variable: '--font-sans' })
 
 export default function RootLayout({
   children

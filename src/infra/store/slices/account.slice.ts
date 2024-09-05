@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { AccountEntity, TransactionType } from '@/domain'
-import { fetchAllAccounts, createTransaction, createAccount } from '../thunks'
+import { AccountEntity } from '@/domain'
+import { fetchAllAccounts, createAccount } from '../thunks'
 
 interface AccountsState {
   accounts: AccountEntity[]
