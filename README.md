@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hola! Este es mi challenge.
 
-## Getting Started
+#### En esta ocacion utilice NextJs, como framework principal.
 
-First, run the development server:
+#### Shadcn como libreria de componentes. En conjunto con tailwindCss para los estilos.
+
+#### Utilice redux toolkit para el manejo del estado y redux-thunk para el estado asincrono.
+
+#### Para el servidor utilice las server actions de Nextjs.
+
+#### Y para simular la base de datos utilice prisma y genere una bdd local de sqlite.
+
+## Comenecemos con la instalacion.
+
+#### Clonemos el repositorio: https://github.com/Diazfe-dev/magoya_challenge
+
+#### Instalemos las dependencias (en este caso utilice npm).
+
+```bash
+npm install
+```
+
+#### Generamos nuestro archivo .env y copiamos el contenido que esta en .env.example.
+
+#### El valor que indica DATABASE_URL="file:./dev.db" es el path hacia nuestra bdd local.
+
+#### Corramos el servidor de desarrollo.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Abrimos nuestro navegador en esta direccion. http://localhost:3000. Nos redirecionara directamente al dashboard.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Si no nos redirecciona podemos navegar nosotros a esta direccion. http://localhost:3000/protected/dashboard.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Podemos comenzar a operar!
 
-## Learn More
+## Reconstruir base de datos.
 
-To learn more about Next.js, take a look at the following resources:
+#### Para borrar la base de datos y volver a construirla es tan simple como ir a la ruta: prisma/ y borrar el archivo dev.db
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Despues ejecutamos el comando:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx prisma migrate dev
+```
 
-## Deploy on Vercel
+#### Esto construira nuestra base de datos desde cero.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Cualquier consulta no duden en contactarme. Saludos!
