@@ -18,7 +18,10 @@ export const createAccountAction = async (
     if (accountExists)
       return { success: false, error: httpResponseCode.CONFLICT }
 
-    const account = await prisma.account.create({ data: data })
+    const account = await prisma.account.create({
+      data: data,
+      include: { transactions: true }
+    })
     if (!account) return { success: false, error: httpResponseCode.BAD_REQUEST }
     return { success: true, account }
   } catch (error) {

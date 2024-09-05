@@ -7,6 +7,7 @@ import { fetchAllAccountsAction } from '@/infra/actions'
 import { setAccounts } from '@/infra/store/slices/account.slice'
 
 import { AccountList, CreateAccount } from '@/components'
+import { CreateTransaction } from '@/components/transactions'
 
 export default function DashboardPage() {
   const dispatch = useDispatch()
@@ -24,8 +25,9 @@ export default function DashboardPage() {
   }, [dispatch])
   return (
     <div className='flex h-full w-full flex-col gap-4'>
-      <div className='flex w-full flex-row justify-end align-end '>
+      <div className='align-end flex w-full flex-row justify-end gap-4'>
         <CreateAccount />
+        <CreateTransaction />
       </div>
       <div className='w-full'>
         <AccountList />
